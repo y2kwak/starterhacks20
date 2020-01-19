@@ -54,19 +54,30 @@ export default class App extends React.Component {
                 {foods}
             </ScrollView>
            
-           <View style={styles.footer}>
+           <View style={styles.inputBox}>
             
             <TextInput
                 style={styles.textInput}
                 onChangeText={(foodName) => this.setState({foodName})}
                 value={this.state.foodName}
-                placeholder='> Enter new groceries!'
+                placeholder='> Enter a new food item!'
                 placeholderTextColor='white'>
             </TextInput>
            
            </View>
            <TouchableOpacity onPress={this.addFood.bind(this)} style={styles.addButton}>
             <Text style={styles.addButtonText}>+</Text>
+           </TouchableOpacity>
+           
+           <TouchableOpacity style={styles.button}>
+           </TouchableOpacity>
+           
+           <TouchableOpacity disabled={true} touchSoundDisabled={true} style={styles.navigateS1}>
+           <Text style={styles.addButtonText}>-ITEMS-</Text>
+           </TouchableOpacity>
+           
+           <TouchableOpacity style={styles.navigateS2}>
+           <Text style={styles.addButtonText}>- CAL -</Text>
            </TouchableOpacity>
            
         </View>
@@ -114,14 +125,19 @@ const styles = StyleSheet.create({
     },
     scrollContainer:{
         flex: 1,
-        marginBottom: 100,
+        marginTop: 105,
+        marginBottom: 115,
     },
-    footer:{
+    inputBox:{
         position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
+        top: 155,
+        left: 20,
+        right: 70,
         zIndex: 10,
+        borderRadius: 50,
+        //borderWidth: 10,
+        backgroundColor: '#252525',
+        borderColor:'#ededed',
         
     },
     textInput:{
@@ -129,15 +145,25 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         color: '#fff',
         padding: 20,
-        backgroundColor: '#252525',
-        borderTopWidth: 2,
+        //borderTopWidth: 2,
         borderTopColor: '#ededed',
     },
-    addButton: {
+    button: {
         position: 'absolute',
         zIndex: 11,
         right: 20,
-        bottom: 90,
+        top: 140,
+        backgroundColor: '#664399',
+        width: 90,
+        height: 90,
+        borderRadius: 50,
+        elevation: 8,
+    },
+    addButton: {
+        position: 'absolute',
+        zIndex: 12,
+        right: 20,
+        top: 140,
         backgroundColor: '#663399',
         width: 90,
         height: 90,
@@ -160,12 +186,12 @@ const styles = StyleSheet.create({
     },
     foodName: {
         fontSize: 25,
-        paddingLeft: 20,
+        paddingLeft: 5,
         borderLeftWidth: 10,
         borderLeftColor: '#E91E63',
     },
     date:{
-        paddingLeft: 20,
+        paddingLeft: 5,
         borderLeftWidth: 10,
         borderLeftColor:'#E91E63',
     },
@@ -177,11 +203,35 @@ const styles = StyleSheet.create({
         padding: 10,
         top: 10,
         bottom: 10,
-        right: 10,
+        right: 20,
     },
     deleteText: {
         color: 'white',
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    navigateS1: {
+        position: 'absolute',
+        bottom: 15,
+        left: 15,
+        width: 183,
+        height: 90,
+        zIndex: 10,
+        borderRadius: 20,
+        backgroundColor: '#9966cc',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    navigateS2: {
+        position: 'absolute',
+        bottom: 15,
+        width: 183,
+        height: 90,
+        right: 15,
+        zIndex: 10,
+        borderRadius: 20,
+        backgroundColor: '#663399',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
