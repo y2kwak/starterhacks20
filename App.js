@@ -1,229 +1,216 @@
-/*Example of Expandable ListView in React Native*/
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow
+ */
+
 import React, { Component } from 'react';
-//import react in our project
 import {
-  LayoutAnimation,
+  SafeAreaView,
   StyleSheet,
+  ScrollView,
   View,
   Text,
-  ScrollView,
-  UIManager,
-  TouchableOpacity,
-  Platform,
-  TextInput,
+  StatusBar,
   Button,
 } from 'react-native';
-//import basic react native components
- 
-class ExpandableItemComponent extends Component {
-  //Custom Component for the Expandable List
-  constructor() {
-    super();
-    this.state = {
-      layoutHeight: 10,
-    };
+
+import {
+  Header,
+  LearnMoreLinks,
+  Colors,
+  DebugInstructions,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
+
+import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
+
+import BottomNavigation, {
+    FullTab
+} from 'react-native-material-bottom-navigation'
+
+/*
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+
+const bottomTabNavigator = createBottomTabNavigator(
+  {
+    Home: HomeScreen,
+    Explore: ExploreScreen,
+  },
+  {
+    initialRouteName: 'Home'
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.item.isExpanded) {
-      this.setState(() => {
-        return {
-          layoutHeight: null,
-        };
-      });
-    } else {
-      this.setState(() => {
-        return {
-          layoutHeight: 0,
-        };
-      });
+);
+*/
+
+class App extends Component {
+    state = {
+        date: {
+          '2020-01-16': {selected: true, marked: true, selectedColor: 'blue'},
+          '2020-02-17': {marked: true},
+          '2012-05-18': {marked: true, dotColor: 'red', activeOpacity: 0},
+          '2012-05-19': {disabled: true, disableTouchEvent: true}
+        }
     }
-  }
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.layoutHeight !== nextState.layoutHeight) {
-      return true;
+    
+    render() {
+        const { date } = this.state
+        
+        return (
+          <>
+                <Text>
+                {"\n"}
+                {"\n"}
+                {"\n"}
+                {"\n"}
+                {"\n"}
+                </Text>
+                <View style={{alignItems: "center"}}>
+                <Text style={{fontSize: 30}}> Groceries</Text>
+                </View>
+                <Calendar
+                // Collection of dates that have to be marked. Default = {}
+                markedDates={date}
+                 />
+                <Button
+                   title="Add Item"
+                   onPress={() => {
+                   console.log("hello")
+                   this.setState({
+                    date: {
+                        '2020-01-16': {selected: true, marked: true, selectedColor: 'yellow'},
+                        '2020-01-17': {marked: true},
+                        '2012-05-18': {marked: true, dotColor: 'red', activeOpacity: 0},
+                        '2012-05-19': {disabled: true, disableTouchEvent: true}
+                          }
+                
+                        })
+                   }}
+                />
+           </>
+        );
     }
-    return false;
-  }
- 
+}
+
+export default App;
+
+class Dashboard extends React.Component {
+  tabs = [
+    {
+      key: 'games',
+      icon: 'gamepad-variant',
+      label: 'Games',
+      barColor: '#388E3C',
+      pressColor: 'rgba(255, 255, 255, 0.16)'
+    },
+    {
+      key: 'movies-tv',
+      icon: 'movie',
+      label: 'Movies & TV',
+      barColor: '#B71C1C',
+      pressColor: 'rgba(255, 255, 255, 0.16)'
+    },
+    {
+      key: 'music',
+      icon: 'music-note',
+      label: 'Music',
+      barColor: '#E64A19',
+      pressColor: 'rgba(255, 255, 255, 0.16)'
+    }
+  ]
+
   render() {
     return (
       <View>
-        {/*Header of the Expandable List Item*/}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={this.props.onClickFunction}
-          style={styles.header}>
-          <Text style={styles.headerText}>{this.props.item.category_name}</Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            height: this.state.layoutHeight,
-            overflow: 'hidden',
-          }}>
-          {/*Content under the header of the Expandable List Item*/}
-          {this.props.item.subcategory.map((item, key) => (
-           <>
-              <Text style={styles.text}>
-                {key}. {item.val}
-              </Text>
-              <View style={styles.separator} />
-            </>
-          ))}
-        </View>
+        <BottomNavigation
+          renderTab={this.renderTab}
+          tabs={this.tabs}
+        />
       </View>
-    );
+    )
   }
+      renderTab = ({ tab, isActive }) => {
+      return (
+        <FullTab
+          key={tab.key}
+          isActive={isActive}
+          label={tab.label}
+          renderIcon={this.renderIcon}
+        />
+      )
+    }
+
+    renderIcon = ({ isActive }) => {
+      return <View />
+    }
 }
 
 
-export default class App extends Component {
-  //Main View defined under this Class
-  constructor() {
-    super();
-    if (Platform.OS === 'android') {
-      UIManager.setLayoutAnimationEnabledExperimental(true);
-    }
-    this.state = { listDataSource: CONTENT };
-  }
- 
-  updateLayout = index => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    const array = [...this.state.listDataSource];
-    array.map((value, placeindex) =>
-      placeindex === index
-        ? (array[placeindex]['isExpanded'] = !array[placeindex]['isExpanded'])
-        : (array[placeindex]['isExpanded'] = false)
-    );
-    this.setState(() => {
-      return {
-        listDataSource: array,
-      };
-    });
+/*
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Expo from 'expo';
+import {StackNavigator} from 'react-navigation';
+
+class HomeScreen extends React.Compoent{
+  static navigationOptions ={
+    title: 'Home',
   };
- 
-  render() {
-    return (
+  render(){
+    const {nvaigate}=this.props.navigation;
+    return(
       <View style={styles.container}>
-        <Text style={styles.topHeading}>
-            {"\n"}
-            ITEMS
-            </Text>
-            <TouchableOpacity /*onPress={this.saveData}*/>
-        <View style={[{ width: "25%", margin: 10, backgroundColor: "#8fbc8f" }]}>
-            <Button onPress={this.saveData}
-              title="ADD ITEM"
-              color="#00008b"
-            />
-            </View>
-        </TouchableOpacity>
-        <ScrollView>
-          {this.state.listDataSource.map((item, key) => (
-            <ExpandableItemComponent
-              key={item.category_name}
-              onClickFunction={this.updateLayout.bind(this, key)}
-              item={item}
-            />
-          ))}
-        </ScrollView>
+        <Text
+          onPress={ ()=> navigate('Home')}>Navigate to Home
+        </Text>
       </View>
     );
   }
-    saveData() {
-        alert('Item added.');
-    }
 }
- 
+class ProfileScreen extends React.Compoent{
+  static navigationOptions ={
+    title: 'Home',
+  };
+  render(){
+    const {nvaigate}=this.props.navigation;
+    return(
+      <View style={styles.container}>
+        <Text
+          onPress={ ()=> navigate('Profile')}>Navigate to Profile
+        </Text>
+      </View>
+    );
+  }
+}
+const NavigationApp = StackNavigator({
+  Home: { screen: HomeScreen},
+  Profile: { screen: ProfileScreen},
+  },{
+    navigationOptions: {
+      headerStyle: {
+        marginTop:      Expo.Constants.statusBarHeight
+    }
+  }
+});
+
+export default class App extends React.Component{
+  render() {
+    return <NavigationApp/>;
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
-    backgroundColor: '#F5FCFF',
-  },
-  topHeading: {
-    textAlign: 'center',
-    //paddingLeft: 30,
-    fontSize: 50,
-    fontFamily: 'Iowan Old Style'
-  },
-  header: {
-    backgroundColor: '#6495ed',
-    padding: 16,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: '500',
-  },
-  separator: {
-    height: 0.5,
-    backgroundColor: '#808080',
-    width: '95%',
-    marginLeft: 16,
-    marginRight: 16,
-  },
-  text: {
-    fontSize: 16,
-    color: '#606070',
-    padding: 10,
-  },
-  content: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#fff',
+    alignItems:'centre',
+    justifyContent: 'centre',
   },
 });
- 
-//Dummy content to show
-//You can also use dynamic data by calling webservice
- CONTENT = [ //const was removed
-  {
-    isExpanded: false,
-    category_name: 'Grapes',
-    subcategory: [{ id: 1, val: '1 bunch' }, { id: 3, val: 'Sub Cat 3' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Coconut',
-    subcategory: [{ id: 4, val: '3' }, { id: 5, val: 'Sub Cat 5' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Ground Beef',
-    subcategory: [{ id: 7, val: 'Sub Cat 7' }, { id: 9, val: 'Sub Cat 9' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Roasted Chicken',
-    subcategory: [{ id: 10, val: 'Sub Cat 10' }, { id: 12, val: 'Sub Cat 2' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Onions',
-    subcategory: [{ id: 13, val: '5 onions' }, { id: 15, val: 'Sub Cat 5' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 6',
-    subcategory: [{ id: 17, val: 'Sub Cat 17' }, { id: 18, val: 'Sub Cat 8' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 7',
-    subcategory: [{ id: 20, val: 'Sub Cat 20' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 8',
-    subcategory: [{ id: 22, val: 'Sub Cat 22' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 9',
-    subcategory: [{ id: 26, val: 'Sub Cat 26' }, { id: 27, val: 'Sub Cat 7' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 10',
-    subcategory: [{ id: 28, val: 'Sub Cat 28' }, { id: 30, val: 'Sub Cat 0' }],
-  },
-  
-];
+ */
+
+
+
+
+
