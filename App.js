@@ -6,6 +6,7 @@ import {
     TextInput,
     ScrollView,
     TouchableOpacity,
+    Modal,
 } from 'react-native';
 
 class Food extends React.Component{
@@ -32,9 +33,15 @@ export default class App extends React.Component {
         this.state={
             foodName: '',
             foodArray: [],
+            modalVisible: false,
             
         }
     }
+    
+    setModalVisible(visible) {
+      this.setState({modalVisible: visible});
+
+        }
     
     render(){
         
@@ -47,12 +54,20 @@ export default class App extends React.Component {
         <View style = {styles.container}>
            <View style={styles.header}>
              <Text>{"\n"}</Text>
-            <Text style={styles.headerText}> - ITEMS - </Text>
+            <Text style={styles.headerText}> Apples&Bananas </Text>
            </View>
            
             <ScrollView style={styles.scrollContainer}>
                 {foods}
             </ScrollView>
+           
+           <Modal animationType="slide" visible={this.state.modalVisible} transparent={true}>
+            <TouchableOpacity disabled={true} touchSoundDisabled={true} style={styles.box}>
+            
+           <Text style={styles.calText}>calendar</Text>
+            
+           </TouchableOpacity>
+        </Modal>
            
            <View style={styles.inputBox}>
             
@@ -76,7 +91,7 @@ export default class App extends React.Component {
            <Text style={styles.addButtonText}>-ITEMS-</Text>
            </TouchableOpacity>
            
-           <TouchableOpacity style={styles.navigateS2}>
+           <TouchableOpacity onPressIn={()=>this.setModalVisible(true)} onPressOut={() => this.setModalVisible(false)} style={styles.navigateS2}>
            <Text style={styles.addButtonText}>- CAL -</Text>
            </TouchableOpacity>
            
@@ -224,7 +239,7 @@ const styles = StyleSheet.create({
     },
     navigateS2: {
         position: 'absolute',
-        bottom: 15,
+        bottom: 20,
         width: 183,
         height: 90,
         right: 15,
@@ -233,5 +248,37 @@ const styles = StyleSheet.create({
         backgroundColor: '#663399',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    addButton1: {
+        position: 'absolute',
+        zIndex: 9,
+        right: 50,
+        top: 200,
+        backgroundColor: '#663399',
+        width: 90,
+        height: 90,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 8,
+    },
+    box: {
+        position: 'absolute',
+        width: 300,
+        height: 300,
+        backgroundColor:'#9966cc',
+        borderRadius: 20,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        top: 300,
+        borderWidth: 5,
+        borderColor: '#ddd',
+    },
+    calText:{
+        color: '#fff',
+        fontSize: 30,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        top: 10,
     },
 });
